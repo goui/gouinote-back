@@ -1,5 +1,6 @@
 package fr.goui.dto;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.util.Set;
 /**
  * The data transfer object for a User.
  */
+@EqualsAndHashCode(exclude = "notes")
 public class UserDTO {
 
     @Getter
