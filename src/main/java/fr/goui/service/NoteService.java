@@ -23,7 +23,8 @@ public class NoteService {
         List<Note> notes = noteRepository.findAll();
         notes.forEach(note -> {
             NoteDTO noteDTO = new NoteDTO();
-            noteDTO.setDate(note.getDate().toInstant().toEpochMilli());
+            noteDTO.setDate(note.getDate());
+            noteDTO.setNickname(note.getUser().getNickname());
             noteDTO.setContent(note.getContent());
             notesDTO.add(noteDTO);
         });
