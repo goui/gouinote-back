@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.List;
 
 /**
  * The data transfer object for a User.
@@ -27,5 +27,5 @@ public class UserDTO {
     @Getter
     @Setter
     @Valid
-    private Set<NoteDTO> notes;
+    private List<NoteDTO> notes;
 }

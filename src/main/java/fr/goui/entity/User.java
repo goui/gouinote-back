@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -28,7 +29,7 @@ public class User {
     private String password;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Note.class, cascade = CascadeType.REMOVE)
-    private Set<Note> notes;
+    private List<Note> notes;
 
     public long getId() {
         return id;
@@ -54,11 +55,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<Note> getNotes() {
+    public List<Note> getNotes() {
         return notes;
     }
 
-    public void setNotes(Set<Note> notes) {
+    public void setNotes(List<Note> notes) {
         this.notes = notes;
     }
 
