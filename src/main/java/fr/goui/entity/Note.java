@@ -22,7 +22,7 @@ public class Note {
     private long id;
 
     @Column(nullable = false)
-    private ZonedDateTime date;
+    private long date;
 
     @Column(nullable = false)
     private String content;
@@ -39,11 +39,11 @@ public class Note {
         this.id = id;
     }
 
-    public ZonedDateTime getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
