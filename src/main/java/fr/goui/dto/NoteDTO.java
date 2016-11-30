@@ -21,4 +21,9 @@ public class NoteDTO {
     @Setter
     @NotNull
     private String content;
+
+    @Getter
+    @Setter
+    @NotNull
+    private String nickname;
 }
