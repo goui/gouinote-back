@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -29,5 +30,10 @@ public class UserFacade {
     @RequestMapping(method = RequestMethod.POST, value = "/createAccount")
     public String createAccount(@Validated @RequestBody UserDTO userDTO) {
         return userService.createAccount(userDTO);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/signIn")
+    public boolean signIn(@RequestParam("nickname") String nickname, @RequestParam("password") String password) {
+        return userService.signIn(nickname, password);
     }
 }

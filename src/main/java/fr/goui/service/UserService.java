@@ -48,4 +48,13 @@ public class UserService {
         userRepository.save(user);
         return userDTO.getNickname();
     }
+
+    public boolean signIn(String nickname, String password) {
+        boolean ret = false;
+        User user = userRepository.findByNicknameAndPassword(nickname, password);
+        if (user != null) {
+            ret = true;
+        }
+        return ret;
+    }
 }
