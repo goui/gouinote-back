@@ -40,4 +40,12 @@ public class UserService {
         });
         return usersDTO;
     }
+
+    public String createAccount(UserDTO userDTO) {
+        User user = new User();
+        user.setNickname(userDTO.getNickname());
+        user.setPassword(userDTO.getPassword());
+        userRepository.save(user);
+        return userDTO.getNickname();
+    }
 }
