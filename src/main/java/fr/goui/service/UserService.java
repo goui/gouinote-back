@@ -6,6 +6,7 @@ import fr.goui.dto.NoteDTO;
 import fr.goui.dto.UserDTO;
 import fr.goui.entity.Note;
 import fr.goui.entity.User;
+import fr.goui.exception.NicknameAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,11 +47,16 @@ public class UserService {
         return usersDTO;
     }
 
-    public UserDTO createAccount(UserDTO userDTO) {
-        User user = new User();
-        user.setNickname(userDTO.getNickname());
-        user.setPassword(userDTO.getPassword());
-        userRepository.save(user);
+    public UserDTO createAccount(UserDTO userDTO) throws NicknameAlreadyExistsException {
+        User user = userRepository.findByNickname(userDTO.getNickname());
+        if(user == null) {
+            user = new User();
+            user.setNickname(userDTO.getNickname());
+            user.setPassword(userDTO.getPassword());
+            userRepository.save(user);
+        } else {
+            throw new NicknameAlreadyExistsException();
+        }
         return userDTO;
     }
 

@@ -2,6 +2,7 @@ package fr.goui.facade;
 
 import fr.goui.dto.NoteDTO;
 import fr.goui.dto.UserDTO;
+import fr.goui.exception.NicknameAlreadyExistsException;
 import fr.goui.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -29,7 +30,7 @@ public class UserFacade {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/createAccount")
-    public UserDTO createAccount(@Validated @RequestBody UserDTO userDTO) {
+    public UserDTO createAccount(@Validated @RequestBody UserDTO userDTO) throws NicknameAlreadyExistsException {
         return userService.createAccount(userDTO);
     }
 
