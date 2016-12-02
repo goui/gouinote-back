@@ -6,10 +6,13 @@ import fr.goui.dto.NoteDTO;
 import fr.goui.dto.UserDTO;
 import fr.goui.entity.Note;
 import fr.goui.entity.User;
+import fr.goui.exception.EmptyNoteException;
 import fr.goui.exception.NicknameAlreadyExistsException;
+import fr.goui.exception.NicknameNotFoundException;
 import fr.goui.exception.WrongCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,14 +86,22 @@ public class UserService {
         }
     }
 
-    public boolean addNote(String nickname, NoteDTO noteDTO) {
+    public boolean addNote(String nickname, NoteDTO noteDTO) throws NicknameNotFoundException, EmptyNoteException {
         User user = userRepository.findByNickname(nickname);
-        Note note = new Note();
-        note.setContent(noteDTO.getContent());
-        note.setDate(noteDTO.getDate());
-        note.setUser(user);
-        noteRepository.save(note);
-        user.getNotes().add(note);
-        return true;
+        if(user != null) {
+            if(!StringUtils.isEmpty(noteDTO.getContent())) {
+                Note note = new Note();
+                note.setContent(noteDTO.getContent());
+                note.setDate(noteDTO.getDate());
+                note.setUser(user);
+                noteRepository.save(note);
+                user.getNotes().add(note);
+                return true;
+            } else {
+                throw new EmptyNoteException();
+            }
+        } else {
+            throw new NicknameNotFoundException();
+        }
     }
 }

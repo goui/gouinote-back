@@ -2,7 +2,9 @@ package fr.goui.facade;
 
 import fr.goui.dto.NoteDTO;
 import fr.goui.dto.UserDTO;
+import fr.goui.exception.EmptyNoteException;
 import fr.goui.exception.NicknameAlreadyExistsException;
+import fr.goui.exception.NicknameNotFoundException;
 import fr.goui.exception.WrongCredentialsException;
 import fr.goui.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +43,7 @@ public class UserFacade {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/addNote")
-    public boolean addNote(@RequestParam("nickname") String nickname, @RequestBody NoteDTO noteDTO) {
+    public boolean addNote(@RequestParam("nickname") String nickname, @RequestBody NoteDTO noteDTO) throws NicknameNotFoundException, EmptyNoteException {
         return userService.addNote(nickname, noteDTO);
     }
 }
