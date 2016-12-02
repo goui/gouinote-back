@@ -3,6 +3,7 @@ package fr.goui.facade;
 import fr.goui.dto.NoteDTO;
 import fr.goui.dto.UserDTO;
 import fr.goui.exception.NicknameAlreadyExistsException;
+import fr.goui.exception.WrongCredentialsException;
 import fr.goui.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -35,7 +36,7 @@ public class UserFacade {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/signIn")
-    public UserDTO signIn(@RequestParam("nickname") String nickname, @RequestParam("password") String password) {
+    public UserDTO signIn(@RequestParam("nickname") String nickname, @RequestParam("password") String password) throws WrongCredentialsException {
         return userService.signIn(nickname, password);
     }
 

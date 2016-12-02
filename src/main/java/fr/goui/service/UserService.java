@@ -7,6 +7,7 @@ import fr.goui.dto.UserDTO;
 import fr.goui.entity.Note;
 import fr.goui.entity.User;
 import fr.goui.exception.NicknameAlreadyExistsException;
+import fr.goui.exception.WrongCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,13 +55,13 @@ public class UserService {
             user.setNickname(userDTO.getNickname());
             user.setPassword(userDTO.getPassword());
             userRepository.save(user);
+            return userDTO;
         } else {
             throw new NicknameAlreadyExistsException();
         }
-        return userDTO;
     }
 
-    public UserDTO signIn(String nickname, String password) {
+    public UserDTO signIn(String nickname, String password) throws WrongCredentialsException {
         User user = userRepository.findByNicknameAndPassword(nickname, password);
         if(user != null) {
             UserDTO userDTO = new UserDTO();
@@ -78,7 +79,7 @@ public class UserService {
             userDTO.setNotes(notesDTO);
             return userDTO;
         } else {
-            return null;
+            throw new WrongCredentialsException();
         }
     }
 
