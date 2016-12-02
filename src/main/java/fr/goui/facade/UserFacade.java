@@ -1,5 +1,6 @@
 package fr.goui.facade;
 
+import fr.goui.dto.NoteDTO;
 import fr.goui.dto.UserDTO;
 import fr.goui.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,10 @@ public class UserFacade {
     @RequestMapping(method = RequestMethod.POST, value = "/signIn")
     public UserDTO signIn(@RequestParam("nickname") String nickname, @RequestParam("password") String password) {
         return userService.signIn(nickname, password);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/addNote")
+    public boolean addNote(@RequestParam("nickname") String nickname, @RequestBody NoteDTO noteDTO) {
+        return userService.addNote(nickname, noteDTO);
     }
 }

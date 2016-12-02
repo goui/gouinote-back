@@ -1,5 +1,6 @@
 package fr.goui.service;
 
+import fr.goui.dao.NoteRepository;
 import fr.goui.dao.UserRepository;
 import fr.goui.dto.NoteDTO;
 import fr.goui.dto.UserDTO;
@@ -19,6 +20,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private NoteRepository noteRepository;
 
     public List<UserDTO> getAllUsers() {
         List<UserDTO> usersDTO = new ArrayList<>();
@@ -70,5 +74,16 @@ public class UserService {
         } else {
             return null;
         }
+    }
+
+    public boolean addNote(String nickname, NoteDTO noteDTO) {
+        User user = userRepository.findByNickname(nickname);
+        Note note = new Note();
+        note.setContent(noteDTO.getContent());
+        note.setDate(noteDTO.getDate());
+        note.setUser(user);
+        noteRepository.save(note);
+        user.getNotes().add(note);
+        return true;
     }
 }
