@@ -33,6 +33,7 @@ public class UserService {
                 NoteDTO noteDTO = new NoteDTO();
                 noteDTO.setDate(note.getDate());
                 noteDTO.setContent(note.getContent());
+                noteDTO.setNickname(userDTO.getNickname());
                 notesDTO.add(noteDTO);
             });
             userDTO.setNotes(notesDTO);
@@ -41,20 +42,33 @@ public class UserService {
         return usersDTO;
     }
 
-    public String createAccount(UserDTO userDTO) {
+    public UserDTO createAccount(UserDTO userDTO) {
         User user = new User();
         user.setNickname(userDTO.getNickname());
         user.setPassword(userDTO.getPassword());
         userRepository.save(user);
-        return userDTO.getNickname();
+        return userDTO;
     }
 
-    public boolean signIn(String nickname, String password) {
-        boolean ret = false;
+    public UserDTO signIn(String nickname, String password) {
         User user = userRepository.findByNicknameAndPassword(nickname, password);
-        if (user != null) {
-            ret = true;
+        if(user != null) {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setNickname(user.getNickname());
+            userDTO.setPassword(user.getPassword());
+            List<NoteDTO> notesDTO = new ArrayList<>();
+            List<Note> notes = user.getNotes();
+            notes.forEach(note -> {
+                NoteDTO noteDTO = new NoteDTO();
+                noteDTO.setDate(note.getDate());
+                noteDTO.setContent(note.getContent());
+                noteDTO.setNickname(userDTO.getNickname());
+                notesDTO.add(noteDTO);
+            });
+            userDTO.setNotes(notesDTO);
+            return userDTO;
+        } else {
+            return null;
         }
-        return ret;
     }
 }

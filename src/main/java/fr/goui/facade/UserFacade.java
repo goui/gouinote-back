@@ -28,12 +28,12 @@ public class UserFacade {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/createAccount")
-    public String createAccount(@Validated @RequestBody UserDTO userDTO) {
+    public UserDTO createAccount(@Validated @RequestBody UserDTO userDTO) {
         return userService.createAccount(userDTO);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/signIn")
-    public boolean signIn(@RequestParam("nickname") String nickname, @RequestParam("password") String password) {
+    public UserDTO signIn(@RequestParam("nickname") String nickname, @RequestParam("password") String password) {
         return userService.signIn(nickname, password);
     }
 }
