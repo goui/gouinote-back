@@ -53,7 +53,7 @@ public class UserService {
 
     public UserDTO createAccount(UserDTO userDTO) throws NicknameAlreadyExistsException {
         User user = userRepository.findByNickname(userDTO.getNickname());
-        if(user == null) {
+        if (user == null) {
             user = new User();
             user.setNickname(userDTO.getNickname());
             user.setPassword(userDTO.getPassword());
@@ -64,32 +64,37 @@ public class UserService {
         }
     }
 
-    public UserDTO signIn(String nickname, String password) throws WrongCredentialsException {
-        User user = userRepository.findByNicknameAndPassword(nickname, password);
-        if(user != null) {
-            UserDTO userDTO = new UserDTO();
-            userDTO.setNickname(user.getNickname());
-            userDTO.setPassword(user.getPassword());
-            List<NoteDTO> notesDTO = new ArrayList<>();
-            List<Note> notes = user.getNotes();
-            notes.forEach(note -> {
-                NoteDTO noteDTO = new NoteDTO();
-                noteDTO.setDate(note.getDate());
-                noteDTO.setContent(note.getContent());
-                noteDTO.setNickname(userDTO.getNickname());
-                notesDTO.add(noteDTO);
-            });
-            userDTO.setNotes(notesDTO);
-            return userDTO;
+    public UserDTO signIn(String nickname, String password) throws WrongCredentialsException, NicknameNotFoundException {
+        User user = userRepository.findByNickname(nickname);
+        if (user != null) {
+            user = userRepository.findByNicknameAndPassword(nickname, password);
+            if (user != null) {
+                UserDTO userDTO = new UserDTO();
+                userDTO.setNickname(user.getNickname());
+                userDTO.setPassword(user.getPassword());
+                List<NoteDTO> notesDTO = new ArrayList<>();
+                List<Note> notes = user.getNotes();
+                notes.forEach(note -> {
+                    NoteDTO noteDTO = new NoteDTO();
+                    noteDTO.setDate(note.getDate());
+                    noteDTO.setContent(note.getContent());
+                    noteDTO.setNickname(userDTO.getNickname());
+                    notesDTO.add(noteDTO);
+                });
+                userDTO.setNotes(notesDTO);
+                return userDTO;
+            } else {
+                throw new WrongCredentialsException();
+            }
         } else {
-            throw new WrongCredentialsException();
+            throw new NicknameNotFoundException();
         }
     }
 
     public boolean addNote(String nickname, NoteDTO noteDTO) throws NicknameNotFoundException, EmptyNoteException {
         User user = userRepository.findByNickname(nickname);
-        if(user != null) {
-            if(!StringUtils.isEmpty(noteDTO.getContent())) {
+        if (user != null) {
+            if (!StringUtils.isEmpty(noteDTO.getContent())) {
                 Note note = new Note();
                 note.setContent(noteDTO.getContent());
                 note.setDate(noteDTO.getDate());

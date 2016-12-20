@@ -9,6 +9,7 @@ import fr.goui.exception.WrongCredentialsException;
 import fr.goui.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,7 +39,7 @@ public class UserFacade {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/signIn")
-    public UserDTO signIn(@RequestParam("nickname") String nickname, @RequestParam("password") String password) throws WrongCredentialsException {
+    public UserDTO signIn(@RequestParam("nickname") String nickname, @RequestParam("password") String password) throws WrongCredentialsException, NicknameNotFoundException {
         return userService.signIn(nickname, password);
     }
 
