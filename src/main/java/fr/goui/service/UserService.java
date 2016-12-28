@@ -109,4 +109,26 @@ public class UserService {
             throw new NicknameNotFoundException();
         }
     }
+
+    public UserDTO getUser(String nickname) throws NicknameNotFoundException {
+        User user = userRepository.findByNickname(nickname);
+        if (user != null) {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setNickname(user.getNickname());
+            userDTO.setPassword(user.getPassword());
+            List<Note> notes = user.getNotes();
+            List<NoteDTO> notesDTO = new ArrayList<>();
+            notes.forEach(note -> {
+                NoteDTO noteDTO = new NoteDTO();
+                noteDTO.setDate(note.getDate());
+                noteDTO.setContent(note.getContent());
+                noteDTO.setNickname(user.getNickname());
+                notesDTO.add(noteDTO);
+            });
+            userDTO.setNotes(notesDTO);
+            return userDTO;
+        } else {
+            throw new NicknameNotFoundException();
+        }
+    }
 }

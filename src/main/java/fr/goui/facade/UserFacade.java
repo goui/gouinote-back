@@ -47,4 +47,9 @@ public class UserFacade {
     public boolean addNote(@RequestParam("nickname") String nickname, @RequestBody NoteDTO noteDTO) throws NicknameNotFoundException, EmptyNoteException {
         return userService.addNote(nickname, noteDTO);
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/{nickname}")
+    public UserDTO getUser(@PathVariable String nickname) throws NicknameNotFoundException {
+        return userService.getUser(nickname);
+    }
 }
